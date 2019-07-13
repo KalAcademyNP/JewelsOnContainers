@@ -25,6 +25,23 @@ services:
     depends_on:
       - mssqlserver
 
+  tokenserver:
+    build:
+      context: .\TokenServiceApi
+      dockerfile: Dockerfile
+    image: jewels/tokenapi
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      MvcClient: http://localhost:5202
+    ports:
+      - "5070:80"
+    container_name: tokenserviceapi
+    networks:
+      - backend
+      - frontend
+    depends_on:
+      - mssqlserver
+
   webmvc:
     build:
       context: .\webmvc
@@ -33,6 +50,8 @@ services:
     container_name: webshop
     environment:
       CatalogUrl: http://catalog
+      IdentityUrl: http://10.10.10.30:5070
+      CallBackUrl: http://localhost:5202
       ASPNETCORE_ENVIRONMENT: Development
     ports:
       - "5202:80"
@@ -40,6 +59,7 @@ services:
       - frontend
     depends_on:
       - catalog
+      - tokenserver
 
 
   mssqlserver:
