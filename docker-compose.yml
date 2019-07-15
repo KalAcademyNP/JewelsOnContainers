@@ -35,7 +35,7 @@ services:
       ConnectionString: basket.data
     ports:
       - "5065:80"
-    container_name: catalogapi
+    container_name: cartapi
     networks:
       - backend
       - frontend
@@ -93,7 +93,7 @@ services:
 
   basket.data:
     image: redis
-      ports:
-        - "6378:6379"  
-      networks:
-        - backend 
+    ports:
+      - "6378:6379"  
+    networks:
+      - backend 
