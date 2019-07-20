@@ -43,6 +43,26 @@ services:
       - basket.data
       - tokenserver
 
+  order:
+    build:
+      context: .\OrderApi
+      dockerfile: Dockerfile
+    image: jewels/orderapi
+    environment:
+      IdentityUrl: http://10.10.10.30:5070
+      SQLSERVER_HOST: catalogdb
+      SA_PASSWORD: ProductApi(!)
+      DATABASE: OrdersDb
+    ports:
+      - "5075:80"
+    container_name: orderapi
+    networks:
+      - backend
+      - frontend
+    depends_on:
+      - mssqlserver
+      - tokenserver
+
   tokenserver:
     build:
       context: .\TokenServiceApi
