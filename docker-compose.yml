@@ -90,6 +90,10 @@ services:
       CatalogUrl: http://catalog
       IdentityUrl: http://10.10.10.30:5070
       CallBackUrl: http://localhost:5202
+      CartUrl: http://cart
+      OrderUrl: http://order
+      StripePublicKey: pk_test_jZlpubvlPmcV6QJPReImelQy
+      StripePrivateKey: sk_test_bSHT9qxwjpyCOP0qdAvHLfAA
       ASPNETCORE_ENVIRONMENT: Development
     ports:
       - "5202:80"
@@ -98,6 +102,8 @@ services:
     depends_on:
       - catalog
       - tokenserver
+      - cart
+      - order
 
 
   mssqlserver:

@@ -11,7 +11,7 @@ using WebMvc.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using Microsoft.Extensions.Configuration;
 
 namespace WebMvc.Services
 {
@@ -19,13 +19,13 @@ namespace WebMvc.Services
     {
         private IHttpClient _apiClient;
         private readonly string _remoteServiceBaseUrl;
-        private readonly IOptionsSnapshot<AppSettings> _settings;
+        private readonly IConfiguration _config;
         private readonly IHttpContextAccessor _httpContextAccesor;
         private readonly ILogger _logger;
-        public OrderService(IOptionsSnapshot<AppSettings> settings, IHttpContextAccessor httpContextAccesor, IHttpClient httpClient, ILoggerFactory logger)
+        public OrderService(IConfiguration config, IHttpContextAccessor httpContextAccesor, IHttpClient httpClient, ILoggerFactory logger)
         {
-            _remoteServiceBaseUrl = $"{settings.Value.OrderUrl}/api/v1/orders";
-            _settings = settings;
+            _remoteServiceBaseUrl = $"{config["OrderUrl"]}/api/v1/orders";
+            _config = config;
             _httpContextAccesor = httpContextAccesor;
             _apiClient = httpClient;
             _logger = logger.CreateLogger<OrderService>();

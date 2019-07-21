@@ -34,20 +34,6 @@ namespace WebMvc.Controllers
         }
         public    IActionResult  Index()
         {
-            //try
-            //{
-
-            //    var user = _identityService.Get(HttpContext.User);
-            //    var cart = await _cartService.GetCart(user);
-
-
-            //    return View();
-            //}
-            //catch (BrokenCircuitException)
-            //{
-            //    // Catch error when CartApi is in circuit-opened mode                 
-            //    HandleBrokenCircuitException();
-            //}
 
             return View();
         }
@@ -96,7 +82,6 @@ namespace WebMvc.Controllers
                     };
                     await _cartService.AddItemToCart(user, product);
                 }
-                return RedirectToAction("Index", "Catalog");
             }
             catch (BrokenCircuitException)
             {
@@ -107,18 +92,7 @@ namespace WebMvc.Controllers
             return RedirectToAction("Index", "Catalog");
 
         }
-        //public async Task WriteOutIdentityInfo()
-        //{
-        //    var identityToken =
-        //        await HttpContext.Authentication.
-        //         GetAuthenticateInfoAsync(OpenIdConnectParameterNames.IdToken);
-        //    Debug.WriteLine($"Identity Token: {identityToken}");
-        //    foreach (var claim in User.Claims)
-        //    {
-        //        Debug.WriteLine($"Claim Type: {claim.Type} - Claim Value : {claim.Value}");
-        //    }
 
-        //}
 
         private void HandleBrokenCircuitException()
         {
