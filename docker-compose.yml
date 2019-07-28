@@ -10,7 +10,14 @@ services:
       context: .\ProductCatalogAPI
       dockerfile: Dockerfile
     image: jewels/catalogapi
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+
     environment:
+      ASPNETCORE_ENVIRONMENT: Development
       DatabaseServer: mssqlserver
       DatabaseName: CatalogDb
       DatabaseUser: sa
@@ -30,7 +37,13 @@ services:
       context: .\CartApi
       dockerfile: Dockerfile
     image: jewels/cartapi
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
     environment:
+      ASPNETCORE_ENVIRONMENT: Development
       IdentityUrl: http://10.10.10.30:5070
       ConnectionString: basket.data
     ports:
@@ -42,13 +55,20 @@ services:
     depends_on:
       - basket.data
       - tokenserver
+      - rabbitmq
 
   order:
     build:
       context: .\OrderApi
       dockerfile: Dockerfile
     image: jewels/orderapi
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
     environment:
+      ASPNETCORE_ENVIRONMENT: Development
       IdentityUrl: http://10.10.10.30:5070
       SQLSERVER_HOST: catalogdb
       SA_PASSWORD: ProductApi(!)
@@ -62,6 +82,7 @@ services:
     depends_on:
       - mssqlserver
       - tokenserver
+      - rabbitmq
 
   tokenserver:
     build:
@@ -86,6 +107,11 @@ services:
       dockerfile: Dockerfile
     image: jewels/webmvc
     container_name: webshop
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
     environment:
       CatalogUrl: http://catalog
       IdentityUrl: http://10.10.10.30:5070
@@ -121,5 +147,18 @@ services:
     image: redis
     ports:
       - "6378:6379"  
+    networks:
+      - backend 
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    hostname: myrabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+      - "5671:5671"
+    volumes:
+      - ~/rabbitmq:/var/lib/rabbitmq/mnesia   
     networks:
       - backend 

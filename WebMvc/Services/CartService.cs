@@ -25,7 +25,10 @@ namespace WebMvc.Services
         private readonly string _remoteServiceBaseUrl;
         private IHttpContextAccessor _httpContextAccesor;
         private readonly ILogger _logger;
-        public CartService(IConfiguration config, IHttpContextAccessor httpContextAccesor, IHttpClient httpClient, ILoggerFactory logger)
+        public CartService(IConfiguration config, 
+            IHttpContextAccessor httpContextAccesor, 
+            IHttpClient httpClient, 
+            ILoggerFactory logger)
         {
             _config = config;
             _remoteServiceBaseUrl = $"{_config["CartUrl"]}/api/v1/cart";

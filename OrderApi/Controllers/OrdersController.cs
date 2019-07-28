@@ -31,7 +31,6 @@ namespace ShoesOnContainers.Services.OrderApi.Controllers
         private IBus _bus;
 
         public OrdersController(OrdersContext ordersContext, 
-            
             ILogger<OrdersController> logger, 
             IConfiguration config,
             //IOptionsSnapshot<OrderSettings> settings, 

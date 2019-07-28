@@ -15,12 +15,13 @@ namespace WebMvc.Controllers
         public CatalogController(ICatalogService service) =>
             _service = service;
         
-        public async Task<IActionResult> Index(int? brand, int? type, int? page)
+        public async Task<IActionResult> Index(int? brandFilterApplied,
+            int? typesFilterApplied, int? page)
         {
             var itemsOnPage = 10;
             var catalog = 
                 await _service.GetCatalogItemsAsync(page ?? 0, 
-                itemsOnPage, brand, type);
+                itemsOnPage, brandFilterApplied, typesFilterApplied);
 
             var vm = new CatalogIndexViewModel
             {
@@ -34,8 +35,8 @@ namespace WebMvc.Controllers
                 CatalogItems = catalog.Data,
                 Brands = await _service.GetBrandsAsync(),
                 Types = await _service.GetTypesAsync(),
-                BrandFilterApplied = brand ?? 0,
-                TypesFilterApplied = type ?? 0
+                BrandFilterApplied = brandFilterApplied ?? 0,
+                TypesFilterApplied = typesFilterApplied ?? 0
             };
 
             vm.PaginationInfo.Previous = (vm.PaginationInfo.ActualPage == 0) ? "is-disabled" : "";

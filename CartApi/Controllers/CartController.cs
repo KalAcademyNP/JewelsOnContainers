@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CartApi.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace CartApi.Controllers
 {
@@ -14,9 +15,12 @@ namespace CartApi.Controllers
     public class CartController : Controller
     {
         private ICartRepository _repository;
-        public CartController(ICartRepository repository)
+        private readonly ILogger _logger;
+        public CartController(ICartRepository repository, 
+            ILoggerFactory logger)
         {
             _repository = repository;
+            _logger = logger.CreateLogger<CartController>();
         }
 
         // GET api/v1/cart/5
@@ -44,7 +48,7 @@ namespace CartApi.Controllers
         [HttpDelete("{id}")]
         public void Delete(string id)
         {
-            //_logger.LogInformation("Delete method in Cart controller reached");
+            _logger.LogInformation("Delete method in Cart controller reached");
             _repository.DeleteCartAsync(id);
 
 
